@@ -15,7 +15,7 @@ model User {
   createdAt DateTime   @default(now())
   questions Question[]
   answers   Answer[]
-  Like      Like[]
+  likes     Like[]
 }
 
 model Question {
@@ -28,7 +28,7 @@ model Question {
   user   User @relation(fields: [userId], references: [id])
 
   answers Answer[]
-  Like    Like[]
+  likes   Like[]
 }
 
 model Answer {

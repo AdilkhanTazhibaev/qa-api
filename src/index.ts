@@ -1,7 +1,8 @@
 import express from 'express'
 import question from "./routes/question.routes";
 import auth from "./routes/auth.route";
-import router from "./routes/answer.route";
+import answer from "./routes/answer.route";
+import like from "./routes/like.route";
 
 
 
@@ -12,7 +13,8 @@ app.use(express.json())
 
 app.use(question)
 app.use(auth)
-app.use(router)
+app.use(answer)
+app.use(like)
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`)

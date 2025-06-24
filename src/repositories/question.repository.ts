@@ -14,11 +14,16 @@ export class QuestionRepository {
     }
     static getAll(userId: number) {
         return db.question.findMany({
+            include: {
+                answers: true,
+                likes: true,
+            },
             where: {
                 userId: userId,
             },
         })
     }
+
     static deleteById(id: number) {
         return db.question.delete({
             where: {
@@ -28,6 +33,10 @@ export class QuestionRepository {
     }
     static getById(id: number, userId: number) {
         return db.question.findUnique({
+            include: {
+                answers: true,
+                likes: true,
+            },
             where: {id, userId}
         })
     }

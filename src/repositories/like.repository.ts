@@ -6,10 +6,31 @@ export class LikeRepository {
         return db.like.create({data})
     }
 
-    static getById(data: LikeDto) {
+    static getListById(data: LikeDto) {
         return db.like.findMany({
             where: {
                 questionId: data.questionId
+            }
+        })
+    }
+    static findByUserAndQuestion(userId: number, questionId: number) {
+        return db.like.findUnique({
+            where: {
+                userId_questionId: {
+                    userId,
+                    questionId
+                }
+            }
+        })
+    }
+
+    static deleteByUserAndQuestion(userId: number, questionId: number) {
+        return db.like.delete({
+            where: {
+                userId_questionId: {
+                    userId,
+                    questionId
+                }
             }
         })
     }
