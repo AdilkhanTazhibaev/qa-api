@@ -40,10 +40,14 @@ export class QuestionRepository {
             },
             where
         })
+        if (params?.sort === 'likes') {
+            data.sort((a, b) => b._count.likes - a._count.likes)
+        }
+
         return {
             data:  data.map((item) => ({
                 ...item,
-                likeCount: item._count.likes
+                likeCount: item?._count?.likes
             })),
             meta: {
                 page: params.page,

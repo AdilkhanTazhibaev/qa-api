@@ -11,7 +11,7 @@ const router = express.Router()
 router.post('/question', authMiddleware, upload.single('file'), QuestionController.create)
 router.get('/questions', authMiddleware, QuestionController.getAll)
 router.get('/question/:id', authMiddleware, QuestionController.getById)
-router.delete('/question/:id', authMiddleware, roleMiddleware(['ADMIN']), QuestionController.deleteById)
+router.delete('/question/:id', authMiddleware, QuestionController.deleteById)
 
 
 export default router

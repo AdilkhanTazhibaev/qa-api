@@ -16,6 +16,7 @@ model User {
   questions Question[]
   answers   Answer[]
   likes     Like[]
+  comments Comment[]
 }
 
 model Question {
@@ -30,6 +31,7 @@ model Question {
   answers Answer[]
   likes   Like[]
   fileUrl String?
+  comments Comment[]
 }
 
 model Answer {
@@ -53,3 +55,16 @@ model Like {
 
   @@unique([userId, questionId])
 }
+
+model Comment {
+  id         Int      @id @default(autoincrement())
+  text       String
+  createdAt  DateTime @default(now())
+
+  userId     Int
+  questionId Int
+
+  user       User     @relation(fields: [userId], references: [id])
+  question   Question @relation(fields: [questionId], references: [id])
+}
+

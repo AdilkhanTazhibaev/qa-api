@@ -47,10 +47,10 @@ export class QuestionController {
     static async deleteById(request: Request, response: Response) {
         try {
             const id = request.params?.id
-            await QuestionService.delete(Number(id) as number)
+            await QuestionService.delete(Number(id) as number, request.userId as number)
             sendSuccess(response, 'Deleted')
-        }catch (e) {
-            sendError(response, 'Error', 500, e)
+        }catch (e: any) {
+            sendError(response, e?.message, e?.status || 500)
         }
     }
 }
