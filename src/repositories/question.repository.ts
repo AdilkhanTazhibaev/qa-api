@@ -34,6 +34,7 @@ export class QuestionRepository {
             take: params.limit,
             include: {
                 answers: true,
+                comments: true,
                 _count: {
                     select: { likes: true }
                 },

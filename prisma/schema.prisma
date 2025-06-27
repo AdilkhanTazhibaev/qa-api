@@ -16,7 +16,7 @@ model User {
   questions Question[]
   answers   Answer[]
   likes     Like[]
-  comments Comment[]
+  comments  Comment[]
 }
 
 model Question {
@@ -28,9 +28,9 @@ model Question {
   userId Int
   user   User @relation(fields: [userId], references: [id])
 
-  answers Answer[]
-  likes   Like[]
-  fileUrl String?
+  answers  Answer[]
+  likes    Like[]
+  fileUrl  String?
   comments Comment[]
 }
 
@@ -57,14 +57,13 @@ model Like {
 }
 
 model Comment {
-  id         Int      @id @default(autoincrement())
-  text       String
-  createdAt  DateTime @default(now())
+  id        Int      @id @default(autoincrement())
+  text      String
+  createdAt DateTime @default(now())
 
   userId     Int
   questionId Int
 
-  user       User     @relation(fields: [userId], references: [id])
-  question   Question @relation(fields: [questionId], references: [id])
+  user     User     @relation(fields: [userId], references: [id])
+  question Question @relation(fields: [questionId], references: [id])
 }
-
