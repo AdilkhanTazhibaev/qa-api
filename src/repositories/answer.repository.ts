@@ -1,6 +1,7 @@
 import db from "../config/db";
 import {AnswerDto} from "../models/question.model";
 import {AnswerCreateDto} from "../validators/answer.validator";
+import {TPagination} from "../types";
 
 export class AnswerRepository {
     static create(data: AnswerCreateDto) {
@@ -13,8 +14,10 @@ export class AnswerRepository {
             }
         })
     }
-    static getByUserId(userId: number) {
+    static getByUserId(userId: number, params: TPagination) {
         return db.answer.findMany({
+            skip: (params.page - 1) * params.limit,
+            take: params.limit,
             where: {
                 userId,
             }

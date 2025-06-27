@@ -25,7 +25,10 @@ export class AnswerController {
 
     static async getListByUserId(request: Request, response: Response) {
         try {
-            const answer = await AnswerService.getByUserId(request.userId as number)
+            const answer = await AnswerService.getByUserId(request.userId as number, {
+                page: 1,
+                limit: 2
+            })
             sendSuccess(response, 'Success', answer, 200)
         }catch (e) {
             sendError(response, 'ERROR', 500, e)

@@ -29,6 +29,7 @@ model Question {
 
   answers Answer[]
   likes   Like[]
+  fileUrl String?
 }
 
 model Answer {

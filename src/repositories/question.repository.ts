@@ -1,6 +1,7 @@
 
 import db from "../config/db";
 import {CreateQuestionDto} from "../validators/question.validators";
+import {TPagination} from "../types";
 
 export class QuestionRepository {
     static create(data: CreateQuestionDto) {
@@ -9,19 +10,48 @@ export class QuestionRepository {
                 title: data.title,
                 description: data.description,
                 userId: data.userId as number,
+                fileUrl: data.fileUrl
             },
         })
     }
-    static getAll(userId: number) {
-        return db.question.findMany({
+    static async getAll(userId: number, params: TPagination) {
+        const where = {
+            userId,
+            ...(params.search && {
+                title: {
+                    contains: params.search as string,
+                }
+            })
+        }
+        const total = await db.question.count(
+            {
+                where
+            }
+        )
+
+        const data = await db.question.findMany({
+            skip: (params.page - 1) * params.limit,
+            take: params.limit,
             include: {
                 answers: true,
-                likes: true,
+                _count: {
+                    select: { likes: true }
+                },
             },
-            where: {
-                userId: userId,
-            },
+            where
         })
+        return {
+            data:  data.map((item) => ({
+                ...item,
+                likeCount: item._count.likes
+            })),
+            meta: {
+                page: params.page,
+                limit: params.limit,
+                total,
+                pages: Math.ceil(total / params.limit),
+            }
+        }
     }
 
     static deleteById(id: number) {

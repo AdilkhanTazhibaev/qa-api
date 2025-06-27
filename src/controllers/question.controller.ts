@@ -6,11 +6,12 @@ import {sendError, sendSuccess} from "../helpers/responseHelper";
 export class QuestionController {
     static async create(request: Request, response: Response) {
         const parsed = CreateQuestionSchema.safeParse(request.body)
+        const fileUrl = request.file?.path
         if(!parsed.success) {
              response.status(400).json({ errors: parsed.error})
         }else  {
             try {
-                await QuestionService.create({...parsed.data, userId: request.userId as number})
+                await QuestionService.create({...parsed.data, userId: request.userId as number, fileUrl})
                 sendSuccess(response, 'Created', undefined, 201)
             }catch (e) {
                 sendError(response, 'Error', 500, e)
@@ -19,7 +20,11 @@ export class QuestionController {
     }
     static async getAll(request: Request, response: Response) {
         try {
-            const data =  await QuestionService.getAll(request.userId as number)
+            const data =  await QuestionService.getAll(request.userId as number, {
+                page: 1,
+                limit: 10,
+                search: ''
+            })
             sendSuccess(response, 'Success', data)
         }catch (e) {
             sendError(response, 'Error', 500, e)

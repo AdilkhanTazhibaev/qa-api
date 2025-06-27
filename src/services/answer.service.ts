@@ -1,7 +1,6 @@
 import {AnswerRepository} from "../repositories/answer.repository";
-import {AnswerDto} from "../models/question.model";
-import db from "../config/db";
 import {AnswerCreateDto} from "../validators/answer.validator";
+import {TPagination} from "../types";
 
 export class AnswerService {
     static async create(data: AnswerCreateDto) {
@@ -14,8 +13,8 @@ export class AnswerService {
         }
         return answer
     }
-    static async getByUserId(userId: number) {
-        const answer = await AnswerRepository.getByUserId(userId)
+    static async getByUserId(userId: number, params: TPagination) {
+        const answer = await AnswerRepository.getByUserId(userId, params)
         if(!answer.length) {
             throw {status: 404, message: `Answer is not empty by ${userId}`}
         }
